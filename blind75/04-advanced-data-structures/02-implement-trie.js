@@ -43,6 +43,32 @@ class Trie {
     }
     return true;
   }
+
+  prefixSearch(prefix) {
+    let node = this.root;
+    for (const char of prefix) {
+      node = node.children[char];
+      if (!node) {
+        return [];
+      }
+    }
+
+    const result = [];
+    const stack = [{ node, prefix }];
+    while (stack.length) {
+      const { node, prefix } = stack.pop();
+
+      if (node.isWord) {
+        result.push(prefix);
+      }
+
+      for (const [char, child] of Object.entries(node.children)) {
+        stack.push({ node: child, prefix: prefix + char })
+      }
+    }
+
+    return result;
+  }
 }
 
 const trie = new Trie();
